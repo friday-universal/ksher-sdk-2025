@@ -8,6 +8,10 @@ PHP version Support  >= 5.5
 2. the callback address in demo_pay.php
 3. the log directory in demo_notify.php (optional)
 
-## how to run
+## how to Test
 
-after open page demo_html.php to run demo
+- Install https://www.mamp.info/en/mamp/mac/
+- select your path folder > ksher-sdk > php to run
+- open page demo_html.php to run demo
+
+

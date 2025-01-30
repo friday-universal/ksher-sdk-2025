@@ -47,11 +47,22 @@ EOD;
     public function ksher_sign($data)
     {
         $message = self::paramData($data);
-        $private_key = openssl_get_privatekey($this->privatekey);
+    
+        // Use openssl_pkey_get_private() for better compatibility
+        $private_key = openssl_pkey_get_private($this->privatekey);
+    
+        if (!$private_key) {
+            throw new Exception("Invalid private key");
+        }
+    
         openssl_sign($message, $encoded_sign, $private_key, OPENSSL_ALGO_MD5);
-        openssl_free_key($private_key);
-        $encoded_sign = bin2hex($encoded_sign);
-        return $encoded_sign;
+    
+        // Free key manually only if running PHP 7 (PHP 8+ handles this automatically)
+        if (PHP_VERSION_ID < 80000) {
+            openssl_free_key($private_key);
+        }
+    
+        return bin2hex($encoded_sign);
     }
     /**
      * 验证签名
@@ -60,9 +71,21 @@ EOD;
     {
         $sign = pack("H*", $sign);
         $message = self::paramData($data);
-        $res = openssl_get_publickey($this->pubkey);
-        $result = openssl_verify($message, $sign, $res, OPENSSL_ALGO_MD5);
-        openssl_free_key($res);
+    
+        // Use openssl_pkey_get_public() for better compatibility
+        $public_key = openssl_pkey_get_public($this->pubkey);
+    
+        if (!$public_key) {
+            throw new Exception("Invalid public key");
+        }
+    
+        $result = openssl_verify($message, $sign, $public_key, OPENSSL_ALGO_MD5);
+    
+        // Free key manually only if running PHP 7 (PHP 8+ handles this automatically)
+        if (PHP_VERSION_ID < 80000) {
+            openssl_free_key($public_key);
+        }
+    
         return $result;
     }
     /**
