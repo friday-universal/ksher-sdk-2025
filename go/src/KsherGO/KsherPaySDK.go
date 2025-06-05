@@ -652,7 +652,7 @@ func (client Client) GatewayOrderQuery(mch_order_no string) (response KsherResp,
 	{'pay_content': 'https://gateway.ksher.com/mindex?order_uuid=订单uuid'}
 */
 func (client Client) GatewayPay(mch_order_no, fee_type, channel_list, mch_code, mch_redirect_url, mch_redirect_url_fail,
-	product_name, refer_url, device string, total_fee int, mch_notify_url string) (response KsherResp, err error) {
+	product_name, refer_url, device string, total_fee int, mch_notify_url string, expire_time int) (response KsherResp, err error) {
 	postValue := url.Values{
 		"appid":                 {client.AppId},
 		"nonce_str":             {GetNonceStr(4)},
