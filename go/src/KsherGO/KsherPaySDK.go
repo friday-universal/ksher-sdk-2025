@@ -668,6 +668,7 @@ func (client Client) GatewayPay(mch_order_no, fee_type, channel_list, mch_code, 
 		"device":                {device},
 		"total_fee":             {strconv.Itoa(total_fee)},
 		"mch_notify_url":        {mch_notify_url},
+		"expire_time":			 {strconv.Itoa(expire_time)},
 	}
 	return KsherPost(GateDomain+"/gateway_pay", postValue, client.PrivateKey, client.PublicKey)
 }
